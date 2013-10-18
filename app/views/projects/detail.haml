@@ -1,0 +1,19 @@
+.page-title
+  %h1{ 'ng-show' => 'project._id.$oid' } Edit project
+  %h1{ 'ng-hide' => 'project._id.$oid' } Add new project
+
+%form{ role: 'form', name: 'projectForm', enctype: 'application/x-www-form-urlencoded' }
+  .form-group
+    %label.control-label{ for: 'name' } Name
+    %input.form-control{ type: 'text', name: 'name', 'ng-model' => 'project.name' }
+
+  .form-group
+    %label.control-label{ for: 'synopsis' } Synopsis
+    %input.form-control{ type: 'text', name: 'synopsis', 'ng-model' => 'project.synopsis' }
+
+  .form-group
+    %label.control-label{ for: 'repo' } Repository URL
+    %input.form-control{ type: 'text', name: 'repo', 'ng-model' => 'project.repo' }
+
+  %button.btn.btn-primary{ 'ng-click' => 'save()' } Save
+  %button.btn.btn-danger{ 'ng-click' => 'destroy()', 'ng-show' => 'project._id.$oid' } Delete

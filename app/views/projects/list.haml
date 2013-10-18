@@ -1,0 +1,22 @@
+%h2 Projects
+%p
+  %a{ href: '#/projects/new' }
+    %i.glyphicon.glyphicon-plus-sign
+    Add project
+
+%table.table.table-striped.table-hover
+  %thead
+    %tr
+      %th Name
+      %th Synopsis
+      %th URL
+      %th Action
+
+  %tbody
+    %tr{ 'ng-repeat' => 'project in projects' }
+      %td
+        %a{ href: '#/projects/edit/{{project._id.$oid}}' } {{project.name}}
+      %td {{project.synopsis}}
+      %td {{project.repo}}
+      %td
+        %button.btn.btn-danger{ 'ng-click' => 'destroy(project)' } Destroy
