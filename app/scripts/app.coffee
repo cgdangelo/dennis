@@ -1,9 +1,7 @@
 'use strict'
 
 angular.module('dennis', [
-  'ngCookies',
   'ngResource',
-  'ngSanitize',
   'dennis.project'
 ])
   .config(($routeProvider) ->
