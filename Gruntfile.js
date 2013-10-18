@@ -359,6 +359,20 @@ module.exports = function (grunt) {
           ]
         }
       }
+    },
+    haml: {
+      compile: {
+        // @XXX yeoman.app doesn't work here?
+        files: grunt.file.expandMapping(['app/views/{,*/}*.haml'], '.tmp/', {
+          rename: function (base, path) {
+            return base + path.replace(/^app\/views\//, '').replace(/\.haml$/, '.html');
+          }
+        }),
+        options: {
+          language: 'ruby',
+          target: 'html'
+        }
+      }
     }
   });
 
@@ -369,6 +383,7 @@ module.exports = function (grunt) {
 
     grunt.task.run([
       'clean:server',
+      'haml',
       'concurrent:server',
       'autoprefixer',
       'configureProxies',
@@ -379,6 +394,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('test', [
     'clean:server',
+    'haml',
     'concurrent:test',
     'autoprefixer',
     'configureProxies',
@@ -388,6 +404,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('build', [
     'clean:dist',
+    'haml',
     'useminPrepare',
     'concurrent:dist',
     'autoprefixer',
@@ -407,5 +424,6 @@ module.exports = function (grunt) {
     'build'
   ]);
 
+  grunt.loadNpmTasks('grunt-haml');
   grunt.loadNpmTasks('grunt-connect-proxy');
 };
