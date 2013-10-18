@@ -8,6 +8,8 @@
 // 'test/spec/**/*.js'
 
 module.exports = function (grunt) {
+  var proxySnippet = require('grunt-connect-proxy/lib/utils').proxyRequest;
+
   require('load-grunt-tasks')(grunt);
   require('time-grunt')(grunt);
 
@@ -64,13 +66,35 @@ module.exports = function (grunt) {
         hostname: 'localhost',
         livereload: 35729
       },
+      proxies: [
+        {
+          context: '/api',
+          host: 'localhost',
+          port: 9292
+        }
+      ],
       livereload: {
         options: {
           open: true,
           base: [
             '.tmp',
             '<%= yeoman.app %>'
-          ]
+          ],
+          middleware: function (connect, options) {
+            var middlewares = [];
+            var directory = options.directory || options.base[options.base.length - 1];
+            if (!Array.isArray(options.base)) {
+              options.base = [options.base];
+            }
+            options.base.forEach(function(base) {
+              // Serve static files.
+              middlewares.push(connect.static(base));
+            });
+            // Make directory browse-able.
+            middlewares.push(proxySnippet);
+            middlewares.push(connect.directory(directory));
+            return middlewares;
+          }
         }
       },
       test: {
@@ -80,7 +104,22 @@ module.exports = function (grunt) {
             '.tmp',
             'test',
             '<%= yeoman.app %>'
-          ]
+          ],
+          middleware: function (connect, options) {
+            var middlewares = [];
+            var directory = options.directory || options.base[options.base.length - 1];
+            if (!Array.isArray(options.base)) {
+              options.base = [options.base];
+            }
+            options.base.forEach(function(base) {
+              // Serve static files.
+              middlewares.push(connect.static(base));
+            });
+            // Make directory browse-able.
+            middlewares.push(proxySnippet);
+            middlewares.push(connect.directory(directory));
+            return middlewares;
+          }
         }
       },
       dist: {
@@ -332,6 +371,7 @@ module.exports = function (grunt) {
       'clean:server',
       'concurrent:server',
       'autoprefixer',
+      'configureProxies',
       'connect:livereload',
       'watch'
     ]);
@@ -341,6 +381,7 @@ module.exports = function (grunt) {
     'clean:server',
     'concurrent:test',
     'autoprefixer',
+    'configureProxies',
     'connect:test',
     'karma'
   ]);
@@ -365,4 +406,6 @@ module.exports = function (grunt) {
     'test',
     'build'
   ]);
+
+  grunt.loadNpmTasks('grunt-connect-proxy');
 };
