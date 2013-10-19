@@ -11,11 +11,14 @@ angular.module('dennis').controller 'ProjectNewCtrl', ['$scope', '$location', 'P
       $location.path '/'
 ]
 
-angular.module('dennis').controller 'ProjectEditCtrl', ['$scope', '$routeParams', 'Project', ($scope, $routeParams, Project) ->
+angular.module('dennis').controller 'ProjectEditCtrl', ['$scope', '$routeParams', '$location', 'Project', ($scope, $routeParams, $location, Project) ->
   Project.get oid: $routeParams.oid, (project) =>
-    @.original = project
     $scope.project = new Project project
+    $scope.original = angular.copy project
 
   $scope.save = ->
-    $scope.project.update()
+    if not angular.equals($scope.original, $scope.project)
+      $scope.project.update()
+
+    $location.path '/'
 ]
