@@ -1,8 +1,7 @@
 'use strict';
 
-describe('Controller: ProjectListCtrl', function () {
-  var $httpBackend, $rootScope, $controller;
-  var TestProjectListCtrl,
+describe('controllers: Project', function () {
+  var $httpBackend, $rootScope, $controller, $location,
       projects = [
         {
           "_id": {"$oid": "Object ID #1"},
@@ -26,49 +25,84 @@ describe('Controller: ProjectListCtrl', function () {
         }
       ];
 
-
   beforeEach(function () {
     module('dennis');
   });
-
-  beforeEach(inject(function ($injector) {
-    $httpBackend = $injector.get('$httpBackend');
-    $httpBackend.when('GET', '/api/projects').respond(projects);
-
-    $rootScope = $injector.get('$rootScope');
-    $controller = $injector.get('$controller');
-    TestProjectListCtrl = function () {
-      return $controller('ProjectListCtrl', {'$scope': $rootScope});
-    }
-  }));
 
   afterEach(function() {
     $httpBackend.verifyNoOutstandingExpectation();
     $httpBackend.verifyNoOutstandingRequest();
   });
 
-  it('should get list of projects from api', function () {
-    $httpBackend.expectGET('/api/projects');
-    var controller = TestProjectListCtrl();
-    $httpBackend.flush();
-  });
+  describe('ProjectListCtrl', function () {
+    var TestProjectListCtrl;
 
-  it('should add projects to list', function () {
-    var controller = TestProjectListCtrl();
-    $httpBackend.flush();
-    expect($rootScope.projects.length).toBe(3);
-  });
+    beforeEach(inject(function ($injector) {
+      $httpBackend = $injector.get('$httpBackend');
+      $httpBackend.when('GET', '/api/projects').respond(projects);
 
-  it('should remove project from list when deleting', function () {
-    var deletingProject = projects[0],
-        controller = TestProjectListCtrl();
-    $httpBackend.flush();
-    $httpBackend.expectDELETE('/api/projects/' + escape(deletingProject._id.$oid)).respond(function() {
-      $rootScope.projects.pop();
-      return $rootScope.projects;
+      $rootScope = $injector.get('$rootScope');
+      $controller = $injector.get('$controller');
+      TestProjectListCtrl = function () {
+        return $controller('ProjectListCtrl', {'$scope': $rootScope});
+      }
+    }));
+
+    it('should get list of projects from api', function () {
+      $httpBackend.expectGET('/api/projects');
+      var controller = TestProjectListCtrl();
+      $httpBackend.flush();
     });
-    $rootScope.destroy(deletingProject);
-    $httpBackend.flush();
-    expect($rootScope.projects.length).toBe(2);
+
+    it('should add projects to list', function () {
+      var controller = TestProjectListCtrl();
+      $httpBackend.flush();
+      expect($rootScope.projects.length).toBe(3);
+    });
+
+    it('should remove project from list when deleting', function () {
+      var deletingProject = projects[0],
+          controller = TestProjectListCtrl();
+      $httpBackend.flush();
+      $httpBackend.expectDELETE('/api/projects/' + escape(deletingProject._id.$oid)).respond(function() {
+        $rootScope.projects.pop();
+        return $rootScope.projects;
+      });
+      $rootScope.destroy(deletingProject);
+      $httpBackend.flush();
+      expect($rootScope.projects.length).toBe(2);
+    });
+  });
+
+  describe('ProjectEditCtrl', function () {
+    var TestProjectEditCtrl;
+
+    beforeEach(inject(function ($injector) {
+      $httpBackend = $injector.get('$httpBackend');
+      $httpBackend.when('GET').respond(projects[0]);
+
+      $rootScope = $injector.get('$rootScope');
+      $location = $injector.get('$location');
+      $controller = $injector.get('$controller');
+      TestProjectEditCtrl = function () {
+        return $controller('ProjectEditCtrl', {'$scope': $rootScope});
+      }
+    }));
+
+    it('should save if object is changed', function () {
+      var controller = TestProjectEditCtrl();
+      $httpBackend.flush();
+      $rootScope.project.name = "Project #2 New Name";
+
+      $httpBackend.expectPUT('/api/projects/' + escape($rootScope.project._id.$oid)).respond();
+      $rootScope.save();
+      $httpBackend.flush();
+    });
+
+    it('should not save if objects are alike', function () {
+      var controller = TestProjectEditCtrl();
+      $httpBackend.flush();
+      $rootScope.save();
+    });
   });
 });
