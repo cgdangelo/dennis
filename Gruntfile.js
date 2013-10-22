@@ -46,6 +46,10 @@ module.exports = function (grunt) {
           '{.tmp,<%= yeoman.app %>}/scripts/{,*/}*.js',
           '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
         ]
+      },
+      haml: {
+        files: ['<%= yeoman.app %>/views/{,*/}*.haml'],
+        tasks: ['haml']
       }
     },
     autoprefixer: {
