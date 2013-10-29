@@ -1,16 +1,8 @@
 angular.module('dennis.project', ['ngResource']).
   factory 'Project', ['$resource', ($resource) ->
-    Project = $resource '/api/projects/:oid', null,
+    Project = $resource '/api/projects/:oid', oid: "@_id.$oid",
       update:
         method: 'PUT'
-
-      delete:
-        method: 'DELETE'
-        isArray: true
-
-    # @FIXME
-    Project::update = (data) ->
-      Project.update oid: @._id.$oid, @, data
 
     Project
   ]
