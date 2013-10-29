@@ -59,19 +59,6 @@ describe('controllers: Project', function () {
       $httpBackend.flush();
       expect($rootScope.projects.length).toBe(3);
     });
-
-    it('should remove project from list when deleting', function () {
-      var deletingProject = projects[0],
-          controller = TestProjectListCtrl();
-      $httpBackend.flush();
-      $httpBackend.expectDELETE('/api/projects/' + escape(deletingProject._id.$oid)).respond(function() {
-        $rootScope.projects.pop();
-        return $rootScope.projects;
-      });
-      $rootScope.destroy(deletingProject);
-      $httpBackend.flush();
-      expect($rootScope.projects.length).toBe(2);
-    });
   });
 
   describe('ProjectEditCtrl', function () {
