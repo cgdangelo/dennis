@@ -4,21 +4,21 @@ describe('controllers: Project', function () {
   var $httpBackend, $rootScope, $controller, $location,
       projects = [
         {
-          "_id": {"$oid": "Object ID #1"},
+          "id": "Object ID #1",
           "name": "Project Name #1",
           "synopsis": "Short description of Project #1",
           "repo":"git@github.com:user/project-1.git"
         },
 
         {
-          "_id": {"$oid": "Object ID #2"},
+          "id": "Object ID #2",
           "name": "Project Name #2",
           "synopsis": "Short description of Project #2",
           "repo":"git@github.com:user/project-2.git"
         },
 
         {
-          "_id": {"$oid": "Object ID #3"},
+          "id": "Object ID #3",
           "name": "Project Name #3",
           "synopsis": "Short description of Project #3",
           "repo":"git@github.com:user/project-3.git"
@@ -81,7 +81,7 @@ describe('controllers: Project', function () {
       $httpBackend.flush();
       $rootScope.project.name = "Project #2 New Name";
 
-      $httpBackend.expectPUT('/api/projects/' + escape($rootScope.project._id.$oid)).respond();
+      $httpBackend.expectPUT('/api/projects/' + escape($rootScope.project.id)).respond();
       $rootScope.save();
       $httpBackend.flush();
     });

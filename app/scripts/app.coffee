@@ -6,20 +6,22 @@ angular.module('dennis', [
 ])
   .config(($routeProvider) ->
     $routeProvider.
-      when('/',
-        redirectTo: '/projects'
-      ).
-      when('/projects',
-        controller: 'ProjectListCtrl',
-        templateUrl: '/projects/list.html'
-      ).
-      when('/projects/new',
-        controller: 'ProjectNewCtrl',
-        templateUrl: '/projects/detail.html'
-      ).
-      when('/projects/edit/:oid',
-        controller: 'ProjectEditCtrl',
-        templateUrl: '/projects/detail.html'
-      ).
+      # Projects
+        when('/',
+          redirectTo: '/projects'
+        ).
+        when('/projects',
+          controller: 'ProjectListCtrl',
+          templateUrl: '/projects/list.html'
+        ).
+        when('/projects/new',
+          controller: 'ProjectNewCtrl',
+          templateUrl: '/projects/detail.html'
+        ).
+        when('/projects/edit/:id',
+          controller: 'ProjectEditCtrl',
+          templateUrl: '/projects/detail.html'
+        ).
+
       otherwise(redirectTo: '/projects')
   )

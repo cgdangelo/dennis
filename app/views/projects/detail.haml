@@ -1,6 +1,6 @@
 .page-title
-  %h1{ 'ng-show' => 'project._id.$oid' } Edit project
-  %h1{ 'ng-hide' => 'project._id.$oid' } Add new project
+  %h1{ 'ng-show' => 'project.id' } Edit project
+  %h1{ 'ng-hide' => 'project.id' } Add new project
 
 %form{ role: 'form', name: 'projectForm', enctype: 'application/x-www-form-urlencoded' }
   .form-group
@@ -16,5 +16,5 @@
     %input.form-control{ type: 'text', name: 'repo', 'ng-model' => 'project.repo' }
 
   %button.btn.btn-primary{ 'ng-click' => 'save()' } Save
-  %button.btn.btn-danger{ 'ng-click' => 'destroy()', 'ng-show' => 'project._id.$oid' } Delete
+  %button.btn.btn-danger{ 'ng-click' => 'destroy()', 'ng-show' => 'project.id' } Delete
   %a.btn.btn-default{ href: '#/' } Cancel

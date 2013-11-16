@@ -15,7 +15,7 @@
   %tbody
     %tr{ 'ng-repeat' => 'project in projects' }
       %td
-        %a{ href: '#/projects/edit/{{project._id.$oid}}' } {{project.name}}
+        %a{ href: '#/projects/edit/{{project.id}}' } {{project.name}}
       %td {{project.synopsis}}
       %td {{project.repo}}
       %td

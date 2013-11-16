@@ -13,7 +13,7 @@ angular.module('dennis').controller 'ProjectNewCtrl', ['$scope', '$location', 'P
 ]
 
 angular.module('dennis').controller 'ProjectEditCtrl', ['$scope', '$routeParams', '$location', 'Project', ($scope, $routeParams, $location, Project) ->
-  Project.get oid: $routeParams.oid, (project) ->
+  Project.get id: $routeParams.id, (project) ->
     $scope.project = project
     $scope.original = angular.copy project
 
